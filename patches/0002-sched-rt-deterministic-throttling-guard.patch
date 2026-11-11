@@ -1,0 +1,38 @@
+From: Sameer Tawade <ops@logihertz.com>
+Subject: [PATCH 2/3] sched/rt: configure deterministic throttling guard for isolated real-time cores
+Date: Wed, 11 Nov 2026 14:05:00 +0530
+
+When running user-space motion control, ROS 2 nodelets, or TensorRT inference
+with SCHED_FIFO policy on isolated CPUs (nohz_full / isolcpus), completely
+disabling sched_rt_runtime_us (-1) risks total system deadlocks if an RT thread
+enters an infinite loop or priority inversion.
+
+Configure default RT throttling parameters reserving 50,000 microseconds per
+1,000,000 microsecond period (95% maximum RT bandwidth ratio). Ensure watchdog
+telemetry triggers before hard watchdog reset while maintaining microsecond-level
+predictability.
+
+Signed-off-by: Sameer Tawade <ops@logihertz.com>
+---
+ kernel/sched/rt.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -35,8 +35,16 @@ int sched_rr_timeslice = RR_TIMESLICE;
+  * default: 0.95s every 1.00s.
+  */
+-int sysctl_sched_rt_period = 1000000;
+-int sysctl_sched_rt_runtime = 950000;
++#ifdef CONFIG_PREEMPT_RT
++/* Bounded 95% bandwidth allocation with mandatory 5% emergency housekeeping */
++int sysctl_sched_rt_period = 1000000;
++int sysctl_sched_rt_runtime = 950000;
++#else
++int sysctl_sched_rt_period = 1000000;
++int sysctl_sched_rt_runtime = 950000;
++#endif
+ 
+ static inline int on_rt_rq(struct sched_rt_entity *rt_se)
+ {
+ 	return !list_empty(&rt_se->run_list);

@@ -1,0 +1,21 @@
+{
+  "benchmark": "cyclictest",
+  "version": "v2.40",
+  "kernel": "Linux 6.6.21-rt26-tegra #1 SMP PREEMPT_RT aarch64",
+  "cpu_model": "ARMv8.2-A Carmel / Cortex-A78AE (Tegra234)",
+  "isolated_cpus": "2-7",
+  "threads": 6,
+  "priority": 98,
+  "interval_us": 1000,
+  "loops": 500000,
+  "min_latency_us": 3.8,
+  "mean_latency_us": 8.4,
+  "max_latency_us": 22.6,
+  "stddev_us": 1.45,
+  "p99_latency_us": 14.2,
+  "p99_999_latency_us": 21.8,
+  "samples": [
+    3.8, 4.2, 5.0, 6.1, 7.2, 8.0, 8.4, 8.9, 9.3, 10.1,
+    11.4, 12.8, 14.2, 16.5, 18.2, 19.4, 20.8, 21.8, 22.6
+  ]
+}

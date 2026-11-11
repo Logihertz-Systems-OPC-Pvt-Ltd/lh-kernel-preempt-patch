@@ -1,0 +1,19 @@
+# Compiled binaries and objects
+build/
+bin/
+*.o
+*.a
+*.so
+tests/test_runner
+
+# Distribution tarballs
+dist/
+
+# Editor and OS temporary files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/

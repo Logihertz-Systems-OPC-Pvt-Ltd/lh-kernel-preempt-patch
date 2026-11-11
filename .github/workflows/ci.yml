@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    name: C11 ${{ matrix.compiler }} Build & Real-Time Verification
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Display compiler version
+        run: |
+          ${{ matrix.compiler }} --version
+
+      - name: Compile and run test suite
+        run: |
+          make CC=${{ matrix.compiler }} clean
+          make CC=${{ matrix.compiler }} test
+
+      - name: Smoke-test CLI on hardened fixture
+        run: |
+          bin/lh-preempt scan fixtures/hardened_rt_kernel.json --format sarif
+          bin/lh-preempt scan fixtures/hardened_rt_kernel.json --format table
+
+      - name: Smoke-test CLI on vulnerable fixture (expected exit 1)
+        run: |
+          bin/lh-preempt scan fixtures/vulnerable_rt_kernel.json --format json || test $? -eq 1
+
+      - name: Smoke-test CLI patch series verification
+        run: |
+          bin/lh-preempt verify-patches patches
+
+      - name: Smoke-test CLI jitter analysis
+        run: |
+          bin/lh-preempt analyze-jitter fixtures/sample_cyclictest.json
+
+      - name: Smoke-test CLI config generator
+        run: |
+          bin/lh-preempt gen-config --soc tegra234

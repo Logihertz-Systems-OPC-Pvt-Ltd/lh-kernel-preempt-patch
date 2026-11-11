@@ -1,0 +1,3 @@
+0001-arm64-tegra234-preempt-rt-irq-threading.patch
+0002-sched-rt-deterministic-throttling-guard.patch
+0003-drivers-nvgpu-rt-mutex-conversion.patch

@@ -1,0 +1,75 @@
+================================================================================
+NOTICE
+================================================================================
+Product:       Logihertz Real-Time Linux 6.6 LTS PREEMPT_RT Kernel Patchset (lh-kernel-preempt-patch)
+CLI Alias:     lh-preempt (bin/lh-preempt)
+Version:       0.1.0
+Release Date:  2026-11-11
+Target Arch:   ARM64 / aarch64 (NVIDIA Jetson AGX Orin, Orin NX, Orin Nano - tegra234)
+Kernel Base:   Linux Kernel 6.6 LTS (Long Term Support) + PREEMPT_RT
+Organization:  Logihertz Systems (OPC) Private Limited
+Corporate URL: https://logihertz.com/
+Contact:       ops@logihertz.com / security@logihertz.com
+Copyright:     (c) 2026 Logihertz Systems (OPC) Private Limited. All Rights Reserved.
+Creator, Founder, Director & Sole Developer: Sameer Tawade <ops@logihertz.com>
+
+--------------------------------------------------------------------------------
+SECTION 1: APACHE LICENSE 2.0 SECTION 4(d) ATTRIBUTION
+--------------------------------------------------------------------------------
+This product includes software and real-time kernel patches developed by
+Logihertz Systems (OPC) Private Limited and its contributors under the
+Apache License, Version 2.0.
+
+You may obtain a copy of the License at:
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations under
+the License.
+
+--------------------------------------------------------------------------------
+SECTION 2: TRADEMARK & BRAND RESERVATION
+--------------------------------------------------------------------------------
+"Logihertz", "Logihertz Systems", "Logihertz Systems (OPC) Private Limited",
+"lh-kernel-preempt-patch", "lh-preempt", and associated logotypes are
+trademarks of Logihertz Systems (OPC) Private Limited in India and other
+jurisdictions.
+
+No trademark or brand rights are granted by the Apache License 2.0, except for
+reasonable, customary attribution and identification of the original software.
+"NVIDIA", "Jetson", "Orin", and "Tegra" are trademarks or registered trademarks
+of NVIDIA Corporation and are used herein solely for hardware compatibility
+identification.
+
+--------------------------------------------------------------------------------
+SECTION 3: CLEAN-ROOM C11 ARCHITECTURE & ZERO THIRD-PARTY DEPENDENCIES
+--------------------------------------------------------------------------------
+lh-kernel-preempt-patch is engineered from first principles as an independent,
+clean-room C11 verification utility, jitter analysis engine, and real-time
+kernel posture evaluator.
+
+The compiled CLI utility (bin/lh-preempt) contains 100% zero third-party library
+dependencies, linking exclusively against standard ISO C11 libc (POSIX.1-2008)
+and the standard math library (-lm). It compiles cleanly under both GCC and Clang
+with -std=c11 -O2 -Wall -Wextra -Werror -pedantic.
+
+--------------------------------------------------------------------------------
+SECTION 4: TECHNICAL SPECIFICATIONS & STANDARDS CONFORMANCE
+--------------------------------------------------------------------------------
+This software and patchset conforms to the following standards and frameworks:
+  - ISO/IEC 9899:2011 (C11 standard)
+  - Linux Kernel 6.6 LTS Real-Time Patchset (v6.6-rt)
+  - POSIX.1b (Real-Time Extensions: SCHED_FIFO, SCHED_RR, mlockall, timer_create)
+  - Unified Diff Format (IEEE POSIX 1003.1-2008 / patch(1))
+  - Developer's Certificate of Origin (DCO 1.1)
+  - OASIS SARIF v2.1.0: Static Analysis Results Interchange Format
+  - OWASP & CWE Real-Time Safety Classifications:
+    CWE-400 (Uncontrolled Resource Consumption / CPU Starvation),
+    CWE-833 (Deadlock / Priority Inversion),
+    CWE-662 (Improper Synchronization / Non-Deterministic Latency),
+    CWE-667 (Improper Locking / Non-Sleeping Spinlock in RT),
+    CWE-770 (Allocation of Resources Without Limits / Memory Paging Spikes),
+    CWE-250 (Execution with Unnecessary Privileges / Hardware SMI Disruption),
+    CWE-755 (Improper Handling of Exceptional Conditions / Missing Watchdog)

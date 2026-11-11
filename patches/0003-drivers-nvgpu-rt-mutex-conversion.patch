@@ -1,0 +1,44 @@
+From: Sameer Tawade <ops@logihertz.com>
+Subject: [PATCH 3/3] drivers: nvgpu: convert spinlocks to rt_mutex in buffer management paths
+Date: Wed, 11 Nov 2026 14:10:00 +0530
+
+In the out-of-tree NVIDIA nvgpu kernel driver on Tegra234, several internal
+DMA buffer management and page table allocation functions hold non-sleeping
+spinlocks during multi-page memory allocations. Under PREEMPT_RT, holding a
+raw spinlock during potentially preemption-disabled sections creates priority
+inversions where high-priority real-time threads are stalled waiting on GPU
+allocator locks.
+
+Convert allocator locks from raw_spinlock_t to rt_mutex when compiled with
+CONFIG_PREEMPT_RT, enabling priority inheritance and deterministic preemption
+throughout CUDA and TensorRT execution.
+
+Signed-off-by: Sameer Tawade <ops@logihertz.com>
+---
+ drivers/gpu/nvgpu/common/mm/nvgpu_allocator.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+--- a/drivers/gpu/nvgpu/common/mm/nvgpu_allocator.c
++++ b/drivers/gpu/nvgpu/common/mm/nvgpu_allocator.c
+@@ -102,12 +102,20 @@ int nvgpu_allocator_lock(struct nvgpu_al
+ {
+ 	if (!alloc)
+ 		return -EINVAL;
+ 
++#ifdef CONFIG_PREEMPT_RT
++	/* Sleeping rt_mutex with priority inheritance prevents unbounded stall */
++	rt_mutex_lock(&alloc->rt_lock);
++#else
++	spin_lock(&alloc->lock);
++#endif
+ 	return 0;
+ }
+ 
+ void nvgpu_allocator_unlock(struct nvgpu_allocator *alloc)
+ {
++#ifdef CONFIG_PREEMPT_RT
++	rt_mutex_unlock(&alloc->rt_lock);
++#else
++	spin_unlock(&alloc->lock);
++#endif
+ }
