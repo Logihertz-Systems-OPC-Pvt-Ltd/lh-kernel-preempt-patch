@@ -1,0 +1,9 @@
+Package: lh-kernel-preempt-patch
+Version: 0.1.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: Sameer Tawade <ops@logihertz.com>
+Homepage: https://www.logihertz.com
+Description: lh-preempt - Deterministic Worst-Case Execution Time & Jitter Bound
+ C11 Real-Time Linux 6.6 LTS PREEMPT_RT kernel patchset verifier, deterministic Worst-Case Execution Time (WCET) & cyclictest jitter analyzer, and 10-rule RT posture auditor for NVIDIA Jetson Orin (tegra234).
